@@ -24,33 +24,33 @@ export default function LoginPage() {
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
       setMessage("❌ Error al iniciar sesión: " + error.message);
       return;
     }
-
-    if (data.user) {
-      router.push("/mvp");
-    }
+    if (data.user) router.push("/mvp");
   };
 
-  if (loading) return <p className="text-center mt-10 text-white">Verificando sesión...</p>;
+  if (loading)
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="w-10 h-10 border-4 border-green-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center">
-      <div className="bg-[#121212] p-8 rounded-lg w-full max-w-sm">
+    <div className="min-h-screen bg-black flex items-center justify-center px-4">
+      <div className="bg-[#121212] p-6 sm:p-8 rounded-2xl w-full max-w-sm shadow-xl">
+        {/* Logo */}
         <div className="flex justify-center mb-6">
           <span className="text-green-500 text-5xl">🎵</span>
         </div>
+
         <h1 className="text-white text-2xl font-bold text-center mb-6">
           Inicia sesión en Spotify
         </h1>
+
         <form onSubmit={handleLogin} className="flex flex-col gap-4">
           <input
             type="email"
@@ -58,7 +58,7 @@ export default function LoginPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="bg-[#2a2a2a] text-white border border-gray-600 p-3 rounded placeholder-gray-400"
+            className="bg-[#2a2a2a] text-white border border-gray-700 focus:border-green-500 focus:outline-none p-3 rounded-lg placeholder-gray-500 transition text-sm"
           />
           <input
             type="password"
@@ -66,21 +66,25 @@ export default function LoginPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="bg-[#2a2a2a] text-white border border-gray-600 p-3 rounded placeholder-gray-400"
+            className="bg-[#2a2a2a] text-white border border-gray-700 focus:border-green-500 focus:outline-none p-3 rounded-lg placeholder-gray-500 transition text-sm"
           />
           <button
             type="submit"
-            className="bg-green-500 text-black font-bold p-3 rounded hover:bg-green-400"
+            className="bg-green-500 text-black font-bold p-3 rounded-full hover:bg-green-400 active:scale-95 transition text-sm"
           >
             Iniciar sesión
           </button>
         </form>
-        {message && <p className="mt-4 text-center text-gray-300">{message}</p>}
-        <p className="mt-4 text-center text-gray-400">
+
+        {message && (
+          <p className="mt-4 text-center text-gray-300 text-sm">{message}</p>
+        )}
+
+        <p className="mt-6 text-center text-gray-400 text-sm">
           ¿No tienes cuenta?{" "}
           <button
             onClick={() => router.push("/register")}
-            className="text-green-500 underline"
+            className="text-green-500 hover:underline font-semibold"
           >
             Regístrate aquí
           </button>
